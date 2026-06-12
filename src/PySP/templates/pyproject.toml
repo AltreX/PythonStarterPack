@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ project_name }}"
+version = "0.0.1"
+authors = [
+  { name="{{ project_author }}", email="{{ author_mail }}" },
+]
+description = "package description"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "argparse",
+    "logging",
+    "pathlib",
+    "rich",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/{{ project_author }}/{{ project_name }}"
+Issues = "https://github.com/{{ project_author }}/{{ project_name }}/issues"

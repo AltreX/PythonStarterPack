@@ -1,0 +1,48 @@
+# Documentation on how to write your toml file
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PythonStarterPack"
+version = "0.0.1"
+authors = [
+  { name="AltreX", email="contact@altrex.dev" },
+]
+description = "package that give a tool to create new python project with base boiler plate tools and features"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "argparse",
+    "logging",
+    "pathlib",
+    "jinja2",
+    "rich",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/altrex/PythonStarterPack"
+Issues = "https://github.com/altrex/PythonStarterPack/issues"
+
+[project.scripts]
+PySP-new = "PySP.PySP:main"
+
+[tool.setuptools.package-data]
+"PySP.templates" = [
+    ".gitignore",
+    "LICENSE",
+    "README.md",
+    "pyproject.toml"
+]

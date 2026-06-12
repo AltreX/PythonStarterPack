@@ -1,0 +1,9 @@
+# general gitignore
+__pycache__
+*.pyc
+.vscode
+*.egg-info
+pyenv
+dist
+
+# project gitignore
