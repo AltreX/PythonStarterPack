@@ -6,6 +6,9 @@ from pathlib import Path # https://docs.python.org/3/library/pathlib.html
 from . import utils
 
 
+log = logging.getLogger(__name__)
+
+
 def main() -> None:
     # argument parser initialization
     args = arg_parser().parse_args()
@@ -16,18 +19,14 @@ def main() -> None:
     # Disabling standard output logging if silent has been set True
     if not args.silent:
         utils.setup_console_logger(level)
+    else:
+        utils.remove_handlers()
 
     # Set up the log file based on the log file argument status
     if args.log_file:
-        utils.setup_file_logger(level, args.log_file)
+        utils.setup_file_logger(args.log_file, level)
 
-    logging.info(f"starting")
-
-    # logging level examples :
-    # logging.warning(f"a warning /!\\")
-    # logging.error(f"an error !!!")
-    # logging.critical(f"!!! a critical error !!!")
-    # logging.debug(f"debugging message")
+    log.info(f"starting")
 
     ###
     #
@@ -35,7 +34,7 @@ def main() -> None:
     #
     ###
 
-    logging.info(f"stopping")
+    log.info(f"stopping")
 
 
 @utils.add_options("verbose", "log_file", "silent", "logrotate")

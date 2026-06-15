@@ -8,9 +8,8 @@ from .{{ project_name }} import main
 from .utils import setup_console_logger
 
 
-setup_console_logger(logging.DEBUG)
-logger = logging.getLogger()
-
+setup_console_logger()
+log = logging.getLogger(__name__)
 
 {% if asynchronus %}
 async def shutdown(signal: signal.Signals, loop:asyncio.BaseEventLoop):
@@ -21,7 +20,7 @@ async def shutdown(signal: signal.Signals, loop:asyncio.BaseEventLoop):
     # print used to return after the "^C" console artifact, making the
     # next log start cleanly
     print()
-    logger.info(f"Received exit signal {signal.name}...")
+    log.info(f"Received exit signal {signal.name}...")
 
     tasks = set()
 
@@ -30,14 +29,12 @@ async def shutdown(signal: signal.Signals, loop:asyncio.BaseEventLoop):
             tasks.add(task)
             task.cancel()
 
-    logger.info(f"Cancelling {len(tasks)} remaining tasks")
+    log.info(f"Cancelling {len(tasks)} remaining tasks")
     await asyncio.gather(*tasks, return_exceptions=True)
     loop.stop()
 
 
 if __name__ == "__main__":
-    logger.info("{{ project_name }} starting.")
-
     loop = asyncio.new_event_loop()
 
     for s in (signal.SIGTERM, signal.SIGINT):
@@ -49,7 +46,6 @@ if __name__ == "__main__":
         loop.run_forever()
     finally:
         loop.close()
-        logger.info("{{ project_name }} stopped.")
 {% else %}
 if __name__ == '__main__':
     rc = 1

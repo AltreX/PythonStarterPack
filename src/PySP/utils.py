@@ -8,29 +8,39 @@ NM_LOG_FORMAT = (
     "%(asctime)s [%(levelname)s] (%(filename)s:%(lineno)d) : %(message)s")
 
 
+def remove_handlers() -> None:
+    logger = logging.getLogger()
+    for handler in logger.handlers:
+        if type(handler) == type(RichHandler()):
+            logger.removeHandler(handler)
+    if not logger.hasHandlers():
+        logger.addHandler(logging.NullHandler())
+
+
 def setup_console_logger(
         level:int=logging.INFO,
         markup:bool=True,
         console:Console=None) -> None:
 
-    console_logger = RichHandler(
+    console_handler = RichHandler(
         rich_tracebacks=True,
         omit_repeated_times=False,
         console=console,
         markup=markup)
+
     logger = logging.getLogger()
     logger.setLevel(level)
     # check if there is already a console handler and remove it if yes
     for handler in logger.handlers:
-        if type(handler) == type(console_logger):
+        if type(handler) == type(console_handler):
             logger.removeHandler(handler)
     # add the new handler with the required configuration
-    logger.addHandler(console_logger)
+    logger.addHandler(console_handler)
 
 
 def setup_file_logger(
-        level:int=logging.DEBUG,
-        filename:str="./my_package.log") -> None:
+        filename:str,
+        level:int=logging.DEBUG) -> None:
     file = logging.FileHandler(filename)
     file.setFormatter(logging.Formatter(NM_LOG_FORMAT))
     logger = logging.getLogger()
@@ -53,9 +63,11 @@ def add_options(*options):
                                help="disable console logging")
             if "log_file" in options:
                 p.add_argument("-l", "--log_file",
-                               action="store",
-                               type=str,
-                               help="enable file logging to the path provided")
+                               action="store_const",
+                               const=f"{__name__.split('.')[0]}.log",
+                               help="enable file logging to the path provided"
+                               + "or defaults to the top module name or "
+                               + "package name")
             if "logrotate" in options:
                 p.add_argument("--sized_logrotate",
                             action="store_true",

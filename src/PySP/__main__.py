@@ -4,8 +4,10 @@ from .PySP import main
 from .utils import setup_console_logger
 
 
+setup_console_logger()
+
+
 if __name__ == '__main__':
-    setup_console_logger()
     rc = 1
     try:
         main()
