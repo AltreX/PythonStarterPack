@@ -30,7 +30,7 @@ def setup_console_logger(
 
     logger = logging.getLogger()
     logger.setLevel(level)
-    # check if there is already a console handler and remove it if yes
+    # check if there is already a console handler and remove it
     for handler in logger.handlers:
         if type(handler) == type(console_handler):
             logger.removeHandler(handler)

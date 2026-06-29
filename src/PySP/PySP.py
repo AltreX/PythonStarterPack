@@ -11,11 +11,13 @@ from rich.console import Console
 
 from .utils import print_except, setup_console_logger
 
+
 cwd = Path(os.getcwd())
 module_path = Path(__file__).parent
 console = Console()
 prompt = Prompt(console=console)
 setup_console_logger(console=console)
+log = logging.getLogger(__name__)
 
 
 def main() -> None:
@@ -40,11 +42,11 @@ def main() -> None:
             install_build_tools_result = install_packages(venv_path,
                                                           args.proxy)
             if not install_build_tools_result :
-                logging.error("[red]build tools install failed")
+                log.error("[red]build tools install failed")
 
     except KeyboardInterrupt:
         console.line()
-        logging.info("[red]exiting PySP after keyboardInterrupt catch.")
+        log.info("[red]exiting PySP after keyboardInterrupt catch.")
 
 
 def create_project(project_path, asynchronus:bool=False) -> tuple[bool, str]:
@@ -52,7 +54,8 @@ def create_project(project_path, asynchronus:bool=False) -> tuple[bool, str]:
     global console
     global prompt
 
-    console.print("\n -> The project name will be the name of the containing folder")
+    console.print("\n -> The project name will be the name of the containing "
+                  +"folder")
     if not project_path:
         user_input = prompt.ask(
             f"    Chose your project path [bold cyan]({cwd})[/]",
@@ -141,7 +144,7 @@ def create_project(project_path, asynchronus:bool=False) -> tuple[bool, str]:
         Path(f"{module_path}/templates/__init__.py"),
         Path(f"{package_path}/__init__.py"))
 
-    logging.info(f"Project [bold green]{project_name}[/] "
+    log.info(f"Project [bold green]{project_name}[/] "
           + f"created at [bold green]{project_path.absolute()}[/]")
 
     return True, project_path
@@ -174,12 +177,12 @@ def create_venv(virtual_env, project_path: Path) -> tuple[bool, str]:
             venv.create(venv_path, clear=True, with_pip=True)
 
         except Exception:
-            logging.error(
+            log.error(
                 "[red]Error trying importing venv module, ensure that venv "
                 + "is installed (ie: pip install venv)")
             print_except()
         console.print()
-        logging.info(f"venv created in [bold green]{venv_path}[/]")
+        log.info(f"venv created in [bold green]{venv_path}[/]")
 
         return True, venv_path
 
@@ -187,7 +190,7 @@ def create_venv(virtual_env, project_path: Path) -> tuple[bool, str]:
         return False, None
 
     else:
-        logging.warning("unknown option")
+        log.warning("unknown option")
         return create_venv(False)
 
 
@@ -196,7 +199,8 @@ def install_packages(env_path: Path, proxy: str = "") -> bool:
     global prompt
 
     try:
-        console.print("\n -> Installation of build tools with pip in the new pyenv")
+        console.print("\n -> Installation of build tools with pip in the new "
+                      + "pyenv")
         if not proxy :
             user_input = prompt.ask(
                 f"    Do you have a proxy ?",
@@ -236,7 +240,7 @@ def install_packages(env_path: Path, proxy: str = "") -> bool:
             pip_cmd = [*pip_cmd, "--proxy", proxy]
         subprocess.check_call(pip_cmd)
     except Exception:
-        logging.error("[red]Error while trying to install pip packages")
+        log.error("[red]Error while trying to install pip packages")
         print_except()
 
     return True
