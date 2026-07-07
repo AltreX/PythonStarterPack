@@ -7,7 +7,11 @@ main sources used for the building process
 
 ## changelog
 
-- 0.0.1 : First Release
+- v0.0.1 : First Release
+- v0.0.2 :
+    - console intgration improvement, using rich console features
+    - global QOL and typo corrections
+    - Readme edit
 
 ## install PythonStarterPack
 
@@ -15,11 +19,11 @@ retrieve the installation package in the release
 
 then install it with pip :
 
-`pip install pythonstarterpack-0.0.1-py3-none-any.whl`
+`pip install pythonstarterpack-0.0.2-py3-none-any.whl`
 
 or
 
-`pip install pythonstarterpack-0.0.1.tar.gz`
+`pip install pythonstarterpack-0.0.2.tar.gz`
 
 ## setup project
 
@@ -27,7 +31,7 @@ install the package PythonStarterPack
 
 then execute the following command :
 
-`python -m PythonStarterPack`
+`python -m PySP`
 
 or
 
