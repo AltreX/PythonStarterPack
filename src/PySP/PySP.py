@@ -55,7 +55,7 @@ def create_project(project_path, asynchronus:bool=False) -> tuple[bool, str]:
     global prompt
 
     console.print("\n -> The project name will be the name of the containing "
-                  +"folder")
+                  + "folder")
     if not project_path:
         user_input = prompt.ask(
             f"    Chose your project path [bold cyan]({cwd})[/]",
